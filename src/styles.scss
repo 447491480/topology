@@ -74,6 +74,7 @@ a:hover {
       border-top-left-radius: 0.02rem !important;
       border-bottom-left-radius: 0.02rem !important;
     }
+
     &:last-child {
       border-top-right-radius: 0.02rem !important;
       border-bottom-right-radius: 0.02rem !important;
@@ -94,6 +95,7 @@ a:hover {
   .min {
     border-color: $color-primary !important;
   }
+
   .bk {
     background: $color-primary !important;
   }

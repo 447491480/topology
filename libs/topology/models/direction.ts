@@ -1,7 +1,7 @@
 export enum Direction {
-  None,
-  Up,
-  Right,
-  Bottom,
-  Left
+    None,
+    Up,
+    Right,
+    Bottom,
+    Left
 }

@@ -1,11 +1,11 @@
 export enum Lock {
-  None,
-  Readonly,
-  NoEvent
+    None,
+    Readonly,
+    NoEvent
 }
 
 export enum AnchorMode {
-  Default,
-  In,
-  Out
+    Default,
+    In,
+    Out
 }

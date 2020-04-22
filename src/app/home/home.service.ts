@@ -1,94 +1,95 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
-import { HttpService } from 'src/app/http/http.service';
+import {HttpService} from 'src/app/http/http.service';
 
 @Injectable()
 export class HomeService {
-  constructor(protected http: HttpService) { }
-
-  async Get(data: any) {
-    const ret = await this.http.QueryString({ version: data.version }).Get('/api/topology/' + data.id);
-    if (ret.error) {
-      return null;
+    constructor(protected http: HttpService) {
     }
 
-    return ret;
-  }
+    async Get(data: any) {
+        const ret = await this.http.QueryString({version: data.version}).Get('/api/topology/' + data.id);
+        if (ret.error) {
+            return null;
+        }
 
-  async Upload(blob: Blob, shared = false, filename = '/topology/thumb.png') {
-    const form = new FormData();
-    form.append('path', filename);
-    form.append('randomName', '1');
-    form.append('public', shared + '');
-    form.append('file', blob);
-    const ret = await this.http.PostForm('/api/image', form);
-    if (ret.error) {
-      return null;
+        return ret;
     }
 
-    return ret;
-  }
+    async Upload(blob: Blob, shared = false, filename = '/topology/thumb.png') {
+        const form = new FormData();
+        form.append('path', filename);
+        form.append('randomName', '1');
+        form.append('public', shared + '');
+        form.append('file', blob);
+        const ret = await this.http.PostForm('/api/image', form);
+        if (ret.error) {
+            return null;
+        }
 
-  async DelImage(image: string) {
-    const ret = await this.http.Delete('/api' + image);
-    if (ret.error) {
-      return false;
+        return ret;
     }
 
-    return true;
-  }
+    async DelImage(image: string) {
+        const ret = await this.http.Delete('/api' + image);
+        if (ret.error) {
+            return false;
+        }
 
-  async AddImage(image: string) {
-    const ret = await this.http.Post('/api/user/image', { image: image });
-    if (ret.error) {
-      return '';
+        return true;
     }
 
-    return ret.id;
-  }
+    async AddImage(image: string) {
+        const ret = await this.http.Post('/api/user/image', {image: image});
+        if (ret.error) {
+            return '';
+        }
 
-  async Save(data: any) {
-    data = Object.assign({}, data);
-    for (const item of data.data.nodes) {
-      delete item.elementLoaded;
-      delete item.elementRendered;
-    }
-    let ret: any;
-    if (!data.name) {
-      data.name = `Created at ${new Date().toLocaleString()}`;
-    }
-    if (!data.desc) {
-      data.desc = data.name;
-    }
-    if (data.id) {
-      ret = await this.http.Put('/api/user/topology', data);
-    } else {
-      ret = await this.http.Post('/api/user/topology', data);
+        return ret.id;
     }
 
-    if (ret.error) {
-      return null;
+    async Save(data: any) {
+        data = Object.assign({}, data);
+        for (const item of data.data.nodes) {
+            delete item.elementLoaded;
+            delete item.elementRendered;
+        }
+        let ret: any;
+        if (!data.name) {
+            data.name = `Created at ${new Date().toLocaleString()}`;
+        }
+        if (!data.desc) {
+            data.desc = data.name;
+        }
+        if (data.id) {
+            ret = await this.http.Put('/api/user/topology', data);
+        } else {
+            ret = await this.http.Post('/api/user/topology', data);
+        }
+
+        if (ret.error) {
+            return null;
+        }
+
+        return ret;
     }
 
-    return ret;
-  }
+    async Patch(data: any) {
+        if (data.image) {
+            const retImage = await this.http.Patch('/api' + data.image, {
+                public: data.shared
+            });
+            if (retImage.error) {
+                return false;
+            }
+        }
 
-  async Patch(data: any) {
-    if (data.image) {
-      const retImage = await this.http.Patch('/api' + data.image, {
-        public: data.shared
-      });
-      if (retImage.error) {
-        return false;
-      }
+        delete data.image;
+        const ret = await this.http.Patch('/api/user/topology', data);
+        if (ret.error) {
+            return false;
+        }
+
+        return true;
     }
-
-    delete data.image;
-    const ret = await this.http.Patch('/api/user/topology', data);
-    if (ret.error) {
-      return false;
-    }
-
-    return true;
-  }
 }

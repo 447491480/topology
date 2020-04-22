@@ -91,6 +91,7 @@ $color-border: #ddd;
             display: none;
             font-size: 0.14rem;
             color: #888;
+
             &:hover {
               color: $color-primary;
             }
@@ -111,11 +112,13 @@ $color-border: #ddd;
             font-size: 0.3rem !important;
           }
         }
+
         .dropdown {
           .item {
             a {
               min-width: 1.5rem;
               padding: 0.05rem 0;
+
               i {
                 font-size: 0.4rem !important;
               }

@@ -1,69 +1,70 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
-import { Store } from 'le5le-store';
+import {Store} from 'le5le-store';
 
-import { HttpService } from 'src/app/http/http.service';
+import {HttpService} from 'src/app/http/http.service';
 
 @Injectable()
 export class PropsService {
-  constructor(protected http: HttpService) {}
-
-  static images: { id: string; image: string }[];
-
-  async Upload(blob: Blob, filename: string) {
-    const form = new FormData();
-    form.append('path', filename);
-    form.append('randomName', '1');
-    form.append('public', 'true');
-    form.append('file', blob);
-    const ret = await this.http.PostForm('/api/image', form);
-    if (ret.error) {
-      return null;
+    constructor(protected http: HttpService) {
     }
 
-    return ret;
-  }
+    static images: { id: string; image: string }[];
 
-  async GetImages() {
-    if (PropsService.images) {
-      return PropsService.images;
+    async Upload(blob: Blob, filename: string) {
+        const form = new FormData();
+        form.append('path', filename);
+        form.append('randomName', '1');
+        form.append('public', 'true');
+        form.append('file', blob);
+        const ret = await this.http.PostForm('/api/image', form);
+        if (ret.error) {
+            return null;
+        }
+
+        return ret;
     }
 
-    if (!Store.get('user')) {
-      return [];
+    async GetImages() {
+        if (PropsService.images) {
+            return PropsService.images;
+        }
+
+        if (!Store.get('user')) {
+            return [];
+        }
+
+        const ret = await this.http
+            .QueryString({
+                pageIndex: 1,
+                pageCount: 100,
+                count: 0
+            })
+            .Get('/api/user/images');
+        if (ret.error) {
+            return [];
+        }
+
+        PropsService.images = ret.list;
+
+        return ret.list || [];
     }
 
-    const ret = await this.http
-      .QueryString({
-        pageIndex: 1,
-        pageCount: 100,
-        count: 0
-      })
-      .Get('/api/user/images');
-    if (ret.error) {
-      return [];
+    async AddImage(image: string) {
+        const ret = await this.http.Post('/api/user/image', {image: image});
+        if (ret.error) {
+            return '';
+        }
+
+        return ret.id;
     }
 
-    PropsService.images = ret.list;
+    async RemoveImage(id: string) {
+        const ret = await this.http.Delete('/api/user/image/' + id);
+        if (ret.error) {
+            return false;
+        }
 
-    return ret.list || [];
-  }
-
-  async AddImage(image: string) {
-    const ret = await this.http.Post('/api/user/image', { image: image });
-    if (ret.error) {
-      return '';
+        return true;
     }
-
-    return ret.id;
-  }
-
-  async RemoveImage(id: string) {
-    const ret = await this.http.Delete('/api/user/image/' + id);
-    if (ret.error) {
-      return false;
-    }
-
-    return true;
-  }
 }

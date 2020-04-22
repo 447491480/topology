@@ -1,21 +1,21 @@
-import { Node } from 'topology-core/models/node';
+import {Node} from 'topology-core/models/node';
 
 export function flowInternalStorage(ctx: CanvasRenderingContext2D, node: Node) {
-  ctx.beginPath();
+    ctx.beginPath();
 
-  ctx.moveTo(node.rect.x, node.rect.y);
-  ctx.lineTo(node.rect.ex, node.rect.y);
-  ctx.lineTo(node.rect.ex, node.rect.ey);
-  ctx.lineTo(node.rect.x, node.rect.ey);
-  ctx.closePath();
+    ctx.moveTo(node.rect.x, node.rect.y);
+    ctx.lineTo(node.rect.ex, node.rect.y);
+    ctx.lineTo(node.rect.ex, node.rect.ey);
+    ctx.lineTo(node.rect.x, node.rect.ey);
+    ctx.closePath();
 
-  const offset = node.rect.width / 7;
-  ctx.moveTo(node.rect.x, node.rect.y + offset);
-  ctx.lineTo(node.rect.ex, node.rect.y + offset);
+    const offset = node.rect.width / 7;
+    ctx.moveTo(node.rect.x, node.rect.y + offset);
+    ctx.lineTo(node.rect.ex, node.rect.y + offset);
 
-  ctx.moveTo(node.rect.x + offset, node.rect.y);
-  ctx.lineTo(node.rect.x + offset, node.rect.ey);
+    ctx.moveTo(node.rect.x + offset, node.rect.y);
+    ctx.lineTo(node.rect.x + offset, node.rect.ey);
 
-  ctx.fill();
-  ctx.stroke();
+    ctx.fill();
+    ctx.stroke();
 }

@@ -1,20 +1,22 @@
-import { OnInit, Directive, Input, Renderer, ElementRef } from '@angular/core';
-import { Cookie } from 'le5le-store';
+import {Directive, ElementRef, Input, OnInit, Renderer} from '@angular/core';
+import {Cookie} from 'le5le-store';
 
-import { environment } from 'src/environments/environment';
+import {environment} from 'src/environments/environment';
 
 @Directive({
-  selector: '[appImgAuthSrc]'
+    selector: '[appImgAuthSrc]'
 })
 export class ImageAuthDirective implements OnInit {
-  @Input() appImgAuthSrc = '';
-  constructor(private el: ElementRef, private renderer: Renderer) {}
+    @Input() appImgAuthSrc = '';
 
-  ngOnInit() {
-    this.renderer.setElementAttribute(
-      this.el.nativeElement,
-      'src',
-      `${this.appImgAuthSrc}?Authorization=${Cookie.get(environment.token)}`
-    );
-  }
+    constructor(private el: ElementRef, private renderer: Renderer) {
+    }
+
+    ngOnInit() {
+        this.renderer.setElementAttribute(
+            this.el.nativeElement,
+            'src',
+            `${this.appImgAuthSrc}?Authorization=${Cookie.get(environment.token)}`
+        );
+    }
 }

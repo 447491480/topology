@@ -35,6 +35,7 @@ $props-width: 2.4rem;
 
   .buttons {
     padding: 0.1rem 0;
+
     a {
       display: inline-block;
       color: $color;
@@ -73,6 +74,7 @@ $props-width: 2.4rem;
     div {
       background: transparent;
       pointer-events: none;
+
       * {
         pointer-events: initial;
       }
@@ -82,6 +84,7 @@ $props-width: 2.4rem;
       font-size: 0.12rem;
       margin-left: 0.05rem;
       cursor: pointer;
+
       &:hover {
         color: $color-primary;
       }
